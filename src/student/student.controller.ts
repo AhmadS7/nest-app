@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 // eslint-disable-next-line prettier/prettier
 
-import { Controller, Get, Put, Post } from '@nestjs/common';
+import { Controller, Get, Put, Post, Param, Body } from '@nestjs/common';
 
 @Controller('students')
 export class StudentController {
@@ -11,17 +11,19 @@ export class StudentController {
   }
 
   @Get('/:studentId')
-  getStudentById() {
-    return 'Gte Student By Id';
+  getStudentById(@Param('studentId') studentId: string) {
+    return `Get Student With ID of ${studentId}`;
   }
 
   @Post()
-  createStudent() {
-    return 'Building a new Nation';
+  createStudent(@Body() body) {
+    return `Creating Student with ID Following Data: ${JSON.stringify(body)}`;
   }
 
   @Put('/:studentId')
-  updateStudent() {
-    return 'Update Student By Id';
+  updateStudent(@Param('studentId') studentId: string, @Body() body) {
+    return `Updating Student with ID: ${studentId} and with Following Data: ${JSON.stringify(
+      body,
+    )}`;
   }
 }
