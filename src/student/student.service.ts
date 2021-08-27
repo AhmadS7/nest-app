@@ -40,6 +40,32 @@ export class StudentService {
           id: studentId,
           ...payload,
         };
+        return updatedStudent;
+      } else return student;
+    });
+
+    this.students = updatedStudentList;
+    return updatedStudent;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getStudentsByTeacherId(teacherId: string): FindStudentResponseDto[] {
+    return this.students.filter((student) => student.teacher === teacherId);
+  }
+
+  updateStudentTeacher(
+    studentId: string,
+    teacherId: string,
+  ): StudentResponseDto {
+    let updatedStudent: StudentResponseDto;
+
+    let updatedStudentList = this.students.map((student) => {
+      if (student.id === studentId) {
+        updatedStudent = {
+          ...student,
+          teacher: teacherId,
+        };
+        return updatedStudent;
       } else return student;
     });
 

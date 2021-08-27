@@ -3,6 +3,7 @@ import { Body, Put } from '@nestjs/common';
 import { Param } from '@nestjs/common';
 import { Get } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
+import { StudentService } from '../student/student.service';
 import {
   FindStudentResponseDto,
   StudentResponseDto,
@@ -10,19 +11,18 @@ import {
 
 @Controller('/teachers/:teacherById/students')
 export class StudentTeacherController {
+  constructor(private readonly studentsService: StudentService) {}
+
   @Get()
-  getStudents(
-    @Param('teacherById') teacherById: string,
-  ): FindStudentResponseDto[] {
-    return `Get All The Students that under the teacher with the specified ID: ${teacherById}`;
+  getStudents(@Param('teacherId') teacherId: string): FindStudentResponseDto[] {
+    return this.studentsService.getStudentsByTeacherId(teacherId);
   }
 
   @Put('/:studentId')
   updateStudentTeacher(
-    @Body() body,
-    @Param('teacherById') teacherById: string,
+    @Param('teacherById') teacherId: string,
     @Param('studentId') studentId: string,
   ): StudentResponseDto {
-    return `Update Student with the specified ID: ${studentId} and Teacher with ID of ${teacherById}`;
+    return this.studentsService.updateStudentTeacher(teacherId, studentId);
   }
 }
