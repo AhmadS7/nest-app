@@ -11,9 +11,9 @@ export class TeacherService {
     return this.teachers;
   }
 
-  getTeacherById(teacherId: string): FindTeacherResponseDto {
+  getTeacherById(id: string): FindTeacherResponseDto {
     return this.teachers.find((teacher) => {
-      return teacher.id === teacherId;
+      return teacher.id === id;
     });
   }
 }

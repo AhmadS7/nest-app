@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { students } from '../db';
 import {
   CreateStudentDto,
-  FindStudentResponseDto,
+  FindStudentsResponseDto,
   StudentResponseDto,
   UpdateStudentDto,
 } from './dto/student.dto';
@@ -13,12 +13,15 @@ import { v4 as uuid } from 'uuid';
 @Injectable()
 export class StudentService {
   private students = students;
-  getStudents(): FindStudentResponseDto[] {
+
+  getStudents(): FindStudentsResponseDto[] {
     return this.students;
   }
 
-  getStudentById(studentId: string): FindStudentResponseDto {
-    return this.students.find((student) => student.id === studentId);
+  getStudentById(id: string): FindStudentsResponseDto {
+    return this.students.find((student) => {
+      return student.id === id;
+    });
   }
 
   createStudent(payload: CreateStudentDto): StudentResponseDto {
@@ -28,16 +31,17 @@ export class StudentService {
     };
 
     this.students.push(newStudent);
+
     return newStudent;
   }
 
-  updateStudent(payload: UpdateStudentDto, studentId: string) {
+  updateStudent(payload: UpdateStudentDto, id: string): StudentResponseDto {
     let updatedStudent: StudentResponseDto;
 
     let updatedStudentList = this.students.map((student) => {
-      if (student.id === studentId) {
+      if (student.id === id) {
         updatedStudent = {
-          id: studentId,
+          id,
           ...payload,
         };
         return updatedStudent;
@@ -45,17 +49,19 @@ export class StudentService {
     });
 
     this.students = updatedStudentList;
+
     return updatedStudent;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getStudentsByTeacherId(teacherId: string): FindStudentResponseDto[] {
-    return this.students.filter((student) => student.teacher === teacherId);
+  getStudentsByTeacherId(teacherId: string): FindStudentsResponseDto[] {
+    return this.students.filter((student) => {
+      return student.teacher === teacherId;
+    });
   }
 
   updateStudentTeacher(
-    studentId: string,
     teacherId: string,
+    studentId: string,
   ): StudentResponseDto {
     let updatedStudent: StudentResponseDto;
 
@@ -70,6 +76,7 @@ export class StudentService {
     });
 
     this.students = updatedStudentList;
+
     return updatedStudent;
   }
 }

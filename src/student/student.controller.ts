@@ -4,7 +4,7 @@
 import { Controller, Get, Put, Post, Param, Body } from '@nestjs/common';
 import {
   CreateStudentDto,
-  FindStudentResponseDto,
+  FindStudentsResponseDto,
   StudentResponseDto,
   UpdateStudentDto,
 } from './dto/student.dto';
@@ -15,22 +15,20 @@ export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Get()
-  getStudents(): FindStudentResponseDto[] {
+  getStudent(): FindStudentsResponseDto[] {
     return this.studentService.getStudents();
-    // return 'We Are The Victorious Students';
   }
 
   @Get('/:studentId')
   getStudentById(
     @Param('studentId') studentId: string,
-  ): FindStudentResponseDto {
+  ): FindStudentsResponseDto {
     return this.studentService.getStudentById(studentId);
   }
 
   @Post()
-  createStudent(@Body() body: CreateStudentDto): FindStudentResponseDto {
+  createStudent(@Body() body: CreateStudentDto): StudentResponseDto {
     return this.studentService.createStudent(body);
-    // return `Creating Student with ID Following Data: ${JSON.stringify(body)}`;
   }
 
   @Put('/:studentId')

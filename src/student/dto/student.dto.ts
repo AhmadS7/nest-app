@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-export class FindStudentResponseDto {
+export class FindStudentsResponseDto {
   id: string;
   name: string;
   teacher: string;
