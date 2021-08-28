@@ -1,7 +1,15 @@
 /* eslint-disable prettier/prettier */
 // eslint-disable-next-line prettier/prettier
 
-import { Controller, Get, Put, Post, Param, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Put,
+  Post,
+  Param,
+  Body,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import {
   CreateStudentDto,
   FindStudentsResponseDto,
@@ -21,7 +29,7 @@ export class StudentController {
 
   @Get('/:studentId')
   getStudentById(
-    @Param('studentId') studentId: string,
+    @Param('studentId', new ParseUUIDPipe()) studentId: string,
   ): FindStudentsResponseDto {
     return this.studentService.getStudentById(studentId);
   }
@@ -33,7 +41,7 @@ export class StudentController {
 
   @Put('/:studentId')
   updateStudent(
-    @Param('studentId') studentId: string,
+    @Param('studentId', new ParseUUIDPipe()) studentId: string,
     @Body() body: UpdateStudentDto,
   ): StudentResponseDto {
     return this.studentService.updateStudent(body, studentId);
