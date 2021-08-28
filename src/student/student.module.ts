@@ -1,4 +1,12 @@
-import { Module } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
+import { ValidStudentMiddleware } from '../common/middlewares/validStudent.middleware';
 import { StudentController } from './student.controller';
 import { StudentService } from './student.service';
 
@@ -7,4 +15,15 @@ import { StudentService } from './student.service';
   providers: [StudentService],
   exports: [StudentService],
 })
-export class StudentModule {}
+export class StudentModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ValidStudentMiddleware).forRoutes({
+      path: 'students/:studentId',
+      method: RequestMethod.GET,
+    });
+    consumer.apply(ValidStudentMiddleware).forRoutes({
+      path: 'students/:studentId',
+      method: RequestMethod.PUT,
+    });
+  }
+}
